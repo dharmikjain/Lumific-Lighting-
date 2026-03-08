@@ -1,0 +1,722 @@
+/* ═══════════════ ARCHITECTURE PAGE ═══════════════ */
+
+.arch-page {
+  --arch-bg: #0a0a0a;
+  --arch-surface: #111111;
+  --arch-surface2: #181818;
+  --arch-border: #2a2a2a;
+  --arch-accent: #c8a96e;
+  --arch-accent2: #e8c98a;
+  --arch-text: #f0ece4;
+  --arch-muted: #7a7269;
+  --arch-glow: rgba(200, 169, 110, 0.15);
+
+  background: var(--arch-bg);
+  color: var(--arch-text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+.arch-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.arch-page > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── PAGE HEADER ── */
+.arch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  border-bottom: 1px solid var(--arch-border);
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.arch-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.12em;
+  color: var(--arch-accent2);
+}
+
+.arch-logo span {
+  color: var(--arch-muted);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: -4px;
+}
+
+.arch-tag {
+  background: var(--arch-surface2);
+  border: 1px solid var(--arch-border);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--arch-muted);
+}
+
+/* ── HERO ── */
+.arch-hero {
+  padding: 72px 48px 56px;
+  border-bottom: 1px solid var(--arch-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.arch-hero::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(200, 169, 110, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.arch-hero-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--arch-accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arch-hero-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--arch-accent);
+}
+
+.arch-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 7vw, 88px);
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  color: var(--arch-text);
+  margin-bottom: 24px;
+}
+
+.arch-hero h1 em {
+  color: var(--arch-accent);
+  font-style: normal;
+}
+
+.arch-hero-desc {
+  max-width: 560px;
+  color: var(--arch-muted);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ── AUDIENCE BADGES ── */
+.arch-audience-strip {
+  padding: 24px 48px;
+  border-bottom: 1px solid var(--arch-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.arch-audience-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--arch-muted);
+  margin-right: 8px;
+}
+
+.arch-badge {
+  padding: 5px 14px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.arch-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.arch-badge.sales {
+  border-color: #4a9eff;
+  color: #4a9eff;
+}
+
+.arch-badge.marketing {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.arch-badge.client {
+  border-color: var(--arch-accent);
+  color: var(--arch-accent);
+}
+
+.arch-badge.interior {
+  border-color: #7ecfa6;
+  color: #7ecfa6;
+}
+
+.arch-badge.architect {
+  border-color: #b57bff;
+  color: #b57bff;
+}
+
+.arch-badge.partner {
+  border-color: #ff9f43;
+  color: #ff9f43;
+}
+
+.arch-badge.reset-badge {
+  border-color: #444;
+  color: #666;
+}
+
+.arch-badge.active {
+  opacity: 1 !important;
+}
+
+.arch-badge.dimmed {
+  opacity: 0.25;
+}
+
+/* ── MAIN LAYOUT ── */
+.arch-main {
+  padding: 48px;
+}
+
+/* ── SECTION TITLE ── */
+.arch-section-title {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--arch-muted);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arch-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--arch-border);
+}
+
+/* ── ARCHITECTURE GRID ── */
+.arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 2px 1.6fr 2px 1fr;
+  gap: 0;
+  min-height: 600px;
+}
+
+.arch-divider-v {
+  background: var(--arch-border);
+  position: relative;
+}
+
+.arch-divider-v::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent, var(--arch-accent) 50%, transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* columns */
+.arch-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.arch-col-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--arch-muted);
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid var(--arch-border);
+  margin-bottom: 4px;
+}
+
+/* ── PAGE CARDS ── */
+.arch-page-card {
+  background: var(--arch-surface);
+  border: 1px solid var(--arch-border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.arch-page-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--arch-accent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.arch-page-card:hover {
+  border-color: var(--arch-accent);
+  background: var(--arch-surface2);
+  transform: translateX(3px);
+}
+
+.arch-page-card:hover::before {
+  opacity: 1;
+}
+
+.arch-page-card.highlighted {
+  border-color: var(--arch-accent);
+  background: var(--arch-surface2);
+  box-shadow: 0 0 20px var(--arch-glow);
+}
+
+.arch-page-card.highlighted::before {
+  opacity: 1;
+}
+
+.arch-page-card.faded {
+  opacity: 0.2;
+}
+
+.arch-card-icon {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.arch-card-name {
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.arch-card-desc {
+  color: var(--arch-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.arch-card-users {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.arch-cu {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.arch-cu.sales {
+  background: #4a9eff;
+}
+
+.arch-cu.marketing {
+  background: #ff6b6b;
+}
+
+.arch-cu.client {
+  background: var(--arch-accent);
+}
+
+.arch-cu.interior {
+  background: #7ecfa6;
+}
+
+.arch-cu.architect {
+  background: #b57bff;
+}
+
+.arch-cu.partner {
+  background: #ff9f43;
+}
+
+/* ── CENTER CORE ── */
+.arch-core-section {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.arch-core-card {
+  background: linear-gradient(135deg, var(--arch-surface2), var(--arch-surface));
+  border: 1px solid var(--arch-border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.arch-core-card.main-core {
+  border-color: rgba(200, 169, 110, 0.4);
+  background: linear-gradient(135deg, #1a1610, #111);
+}
+
+.arch-core-card:hover {
+  border-color: var(--arch-accent2);
+  box-shadow: 0 0 30px var(--arch-glow);
+  transform: translateY(-2px);
+}
+
+.arch-core-card.highlighted {
+  border-color: var(--arch-accent2);
+  box-shadow: 0 0 30px var(--arch-glow);
+}
+
+.arch-core-card.faded {
+  opacity: 0.15;
+}
+
+.arch-core-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  color: var(--arch-accent2);
+}
+
+.arch-core-desc {
+  color: var(--arch-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.arch-core-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.arch-feature-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--arch-border);
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--arch-muted);
+  text-transform: uppercase;
+}
+
+/* ── DETAIL PANEL ── */
+.arch-detail-panel {
+  margin-top: 48px;
+  background: var(--arch-surface);
+  border: 1px solid var(--arch-border);
+  border-radius: 12px;
+  padding: 32px;
+  min-height: 160px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.arch-detail-panel.active {
+  border-color: rgba(200, 169, 110, 0.4);
+  box-shadow: 0 0 40px rgba(200, 169, 110, 0.06);
+}
+
+.arch-detail-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  background: radial-gradient(ellipse at right center, rgba(200, 169, 110, 0.06), transparent);
+  pointer-events: none;
+}
+
+.arch-dp-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--arch-muted);
+  margin-bottom: 16px;
+}
+
+.arch-dp-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 0.06em;
+  color: var(--arch-accent2);
+  margin-bottom: 10px;
+}
+
+.arch-dp-body {
+  color: var(--arch-muted);
+  font-size: 14px;
+  line-height: 1.8;
+  max-width: 700px;
+}
+
+.arch-dp-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.arch-dp-tag {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--arch-accent);
+  letter-spacing: 0.08em;
+}
+
+.arch-dp-empty {
+  color: var(--arch-border);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ── USER JOURNEY MAP ── */
+.arch-journey-section {
+  margin-top: 64px;
+}
+
+.arch-journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.arch-journey-card {
+  background: var(--arch-surface);
+  border: 1px solid var(--arch-border);
+  border-radius: 10px;
+  padding: 22px;
+  transition: all 0.2s;
+}
+
+.arch-journey-card:hover {
+  border-color: var(--arch-border);
+  background: var(--arch-surface2);
+}
+
+.arch-jc-role {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.arch-jc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.arch-jc-name {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.arch-jc-path {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.arch-jc-path li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 12px;
+  color: var(--arch-muted);
+  line-height: 1.4;
+}
+
+.arch-jc-path li:last-child {
+  border-bottom: none;
+}
+
+.arch-jc-path li::before {
+  content: '→';
+  color: var(--arch-accent);
+  font-size: 11px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+/* ── FOOTER ── */
+.arch-footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid var(--arch-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--arch-muted);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes archFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.arch-page-card,
+.arch-core-card,
+.arch-journey-card {
+  animation: archFadeUp 0.5s ease both;
+}
+
+/* stagger for left column */
+.arch-col:first-child .arch-page-card:nth-child(2) { animation-delay: 0.05s; }
+.arch-col:first-child .arch-page-card:nth-child(3) { animation-delay: 0.1s; }
+.arch-col:first-child .arch-page-card:nth-child(4) { animation-delay: 0.15s; }
+.arch-col:first-child .arch-page-card:nth-child(5) { animation-delay: 0.2s; }
+.arch-col:first-child .arch-page-card:nth-child(6) { animation-delay: 0.25s; }
+.arch-col:first-child .arch-page-card:nth-child(7) { animation-delay: 0.3s; }
+
+/* stagger for right column */
+.arch-col:last-child .arch-page-card:nth-child(2) { animation-delay: 0.05s; }
+.arch-col:last-child .arch-page-card:nth-child(3) { animation-delay: 0.1s; }
+.arch-col:last-child .arch-page-card:nth-child(4) { animation-delay: 0.15s; }
+.arch-col:last-child .arch-page-card:nth-child(5) { animation-delay: 0.2s; }
+.arch-col:last-child .arch-page-card:nth-child(6) { animation-delay: 0.25s; }
+.arch-col:last-child .arch-page-card:nth-child(7) { animation-delay: 0.3s; }
+
+/* stagger for core */
+.arch-core-section .arch-core-card:nth-child(2) { animation-delay: 0.1s; }
+.arch-core-section .arch-core-card:nth-child(3) { animation-delay: 0.2s; }
+.arch-core-section .arch-core-card:nth-child(4) { animation-delay: 0.3s; }
+.arch-core-section .arch-core-card:nth-child(5) { animation-delay: 0.4s; }
+
+/* journey stagger */
+.arch-journey-card:nth-child(1) { animation-delay: 0.05s; }
+.arch-journey-card:nth-child(2) { animation-delay: 0.1s; }
+.arch-journey-card:nth-child(3) { animation-delay: 0.15s; }
+.arch-journey-card:nth-child(4) { animation-delay: 0.2s; }
+.arch-journey-card:nth-child(5) { animation-delay: 0.25s; }
+.arch-journey-card:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes archPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.arch-pulse {
+  animation: archPulse 2s ease-in-out infinite;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .arch-journey-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .arch-header {
+    padding: 20px 24px;
+  }
+
+  .arch-hero {
+    padding: 40px 24px;
+  }
+
+  .arch-audience-strip {
+    padding: 20px 24px;
+  }
+
+  .arch-main {
+    padding: 32px 24px;
+  }
+
+  .arch-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .arch-divider-v {
+    height: 1px;
+    width: 100%;
+  }
+
+  .arch-core-section {
+    padding: 0;
+  }
+
+  .arch-journey-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .arch-footer {
+    padding: 24px;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}

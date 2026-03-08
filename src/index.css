@@ -1,0 +1,257 @@
+/* Global CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Smooth transitions */
+body {
+  transition: background-color 0.3s ease;
+}
+
+/* Text rendering */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Performance optimizations */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-attachment: fixed;
+}
+
+/* custom dot cursor */
+.cursor-dot {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  z-index: 10000;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+}
+.cursor-dot.active {
+  box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.8);
+  transform: translate(-50%, -50%) scale(1.2);
+  background-color: #fff;
+}
+
+
+/* ═══════════════ MEGA MENU STYLES ═══════════════ */
+nav { position: relative; } /* Ensure nav is the positioning context for the full-width mega menu */
+
+.nav-links li { position: relative; height: 100%; display: flex; align-items: center; }
+.nav-caret { font-size: 8px; margin-left: 4px; transition: transform 0.3s; color: #666; }
+.nav-links li:hover .nav-caret { transform: rotate(180deg); color: var(--gold); }
+
+.mega-menu {
+  position: absolute;
+  top: 72px; /* Matches nav height */
+  left: -48px; /* Offset the nav padding */
+  width: 100vw;
+  background: rgba(6, 6, 6, 0.95);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(201,168,53,0.15);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+  padding: 40px 80px;
+}
+
+/* Hover trigger */
+.has-mega:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.5fr;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mega-col h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--light);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.mega-col a {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.mega-col a::after { display: none; } /* Remove the bottom border animation from the main nav */
+
+.mega-col a:hover {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+.highlight-link {
+  color: var(--gold) !important;
+  font-weight: 500;
+}
+
+/* Featured Section inside Mega Menu */
+.mega-featured {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+}
+.mega-featured img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  transition: opacity 0.3s, transform 0.5s;
+}
+.mega-featured:hover img {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+.mega-featured-text {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+.mega-featured-text h5 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.mega-featured-text p {
+  font-size: 11px;
+  color: #ccc;
+  margin-bottom: 12px;
+}
+.mega-cta {
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: var(--light) !important;
+  margin-bottom: 0 !important;
+}
+
+/* Segments Grid Nav */
+.segments-grid-nav {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.mega-segment-card {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--dark2);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 6px;
+  text-align: center;
+}
+.mega-segment-card:hover {
+  background: var(--dark3);
+  border-color: rgba(201,168,53,0.3);
+  transform: translateY(-4px) !important;
+}
+.mega-segment-card .emoji {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+/* Simple Dropdown for Company */
+.simple-dropdown {
+  width: 240px;
+  left: auto;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+}
