@@ -1,0 +1,258 @@
+// Lumific Lighting - B2B/B2C Platform
+// PostgreSQL + Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  INTERIOR
+  ARCHITECT
+  SALES
+  MARKETING
+  PARTNER
+}
+
+enum ProjectMemberRole {
+  OWNER
+  MEMBER
+  VIEWER
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum OrderStatus {
+  DRAFT
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  name          String?
+  role          Role      @default(CLIENT)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  configuratorSessions ConfiguratorSession[]
+  projectMembers       ProjectMember[]
+  projectComments      ProjectComment[]
+  projectApprovals     ProjectApproval[]
+  quotes               Quote[]
+  orders               Order[]
+  trainingProgress     TrainingProgress[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  sku         String?  @unique
+  category    String?
+  description String?
+  price       Decimal? @db.Decimal(12, 2)
+  wattage     String?
+  cct         String?
+  beamAngle   String?  @map("beam_angle")
+  ipRating    String?  @map("ip_rating")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  configuratorSessions ConfiguratorSession[]
+  projectPins          ProjectPin[]
+  quoteItems           QuoteItem[]
+  orderItems           OrderItem[]
+}
+
+model ConfiguratorSession {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  config    Json     // finish, cct, beam, etc.
+  specPdf   String?  @map("spec_pdf") // S3 URL
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  product Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String @map("product_id")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  status      String   @default("active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  members   ProjectMember[]
+  pins      ProjectPin[]
+  comments  ProjectComment[]
+  approvals ProjectApproval[]
+  quotes    Quote[]
+}
+
+model ProjectMember {
+  id        String          @id @default(cuid())
+  projectId String          @map("project_id")
+  userId    String          @map("user_id")
+  role      ProjectMemberRole @default(MEMBER)
+  joinedAt  DateTime        @default(now()) @map("joined_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@map("project_members")
+}
+
+model ProjectPin {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  productId String   @map("product_id")
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, productId])
+  @@map("project_pins")
+}
+
+model ProjectComment {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  userId    String   @map("user_id")
+  body      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("project_comments")
+}
+
+model ProjectApproval {
+  id        String         @id @default(cuid())
+  projectId String         @map("project_id")
+  userId    String         @map("user_id")
+  status    ApprovalStatus @default(PENDING)
+  note      String?
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("project_approvals")
+}
+
+model Quote {
+  id         String   @id @default(cuid())
+  projectId  String?  @map("project_id")
+  userId     String   @map("user_id")
+  clientName String?  @map("client_name")
+  discount   Decimal? @db.Decimal(5, 2)
+  total      Decimal  @db.Decimal(12, 2)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  project Project?   @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items   QuoteItem[]
+  orders  Order[]
+}
+
+model QuoteItem {
+  id        String  @id @default(cuid())
+  quoteId   String  @map("quote_id")
+  productId String  @map("product_id")
+  qty       Int
+  price     Decimal @db.Decimal(12, 2)
+
+  quote   Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("quote_items")
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  quoteId   String?     @map("quote_id")
+  userId    String      @map("user_id")
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  quote Quote?       @relation(fields: [quoteId], references: [id], onDelete: SetNull)
+  user  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String  @map("order_id")
+  productId String  @map("product_id")
+  qty       Int
+  price     Decimal @db.Decimal(12, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model TrainingModule {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String?  // video, quiz, pdf
+  url         String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  progress TrainingProgress[]
+}
+
+model TrainingProgress {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  moduleId  String   @map("module_id")
+  completed Boolean  @default(false)
+  score     Int?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module TrainingModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
+  @@map("training_progress")
+}
+
+model TechAsset {
+  id          String   @id @default(cuid())
+  productId   String?  @map("product_id")
+  type        String   // ies, ldt, dwg, bim, pdf
+  name        String
+  url         String   // S3 URL
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("tech_assets")
+}
